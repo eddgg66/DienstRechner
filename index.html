@@ -58,6 +58,14 @@ html{background:var(--n1);overscroll-behavior:none;}body::before{content:"";posi
 .pp-blue{background:var(--blue-ll);border-color:rgba(74,127,255,0.25);}
 .pp-blue .sv{font-size:0.8rem;font-weight:700;color:var(--blue);}
 
+/* YEAR TOGGLE */
+.tb-left{min-width:0;}
+.app-title{white-space:nowrap;}
+.year-total-pill{white-space:nowrap;}
+.year-seg{display:flex;justify-content:center;margin:0 0 12px;}
+.year-seg-inner{display:inline-flex;background:rgba(255,255,255,0.06);border:1px solid var(--border-b);border-radius:99px;padding:3px;gap:2px;}
+.ybtn{font-family:'Plus Jakarta Sans',sans-serif;font-size:0.8rem;font-weight:600;padding:6px 24px;border-radius:99px;border:none;background:transparent;color:rgba(255,255,255,0.45);cursor:pointer;transition:all .15s;}
+.ybtn.active{background:var(--grad);color:#fff;box-shadow:0 2px 10px rgba(58,107,239,.35);}
 /* MONTH NAV */
 .month-nav{display:flex;align-items:center;gap:7px;margin-bottom:16px;}
 .nav-btn{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.08);border:1px solid var(--border-b);color:rgba(255,255,255,0.6);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0;}
@@ -163,19 +171,24 @@ html{background:var(--n1);overscroll-behavior:none;}body::before{content:"";posi
 .dbtn-krank.active{background:#e11d48;color:#fff;border-color:transparent;}
 .tp-urlaub{background:rgba(52,211,153,0.12);color:#059669;}
 .tp-krank{background:rgba(251,113,133,0.12);color:#e11d48;}
+.topbar{gap:10px;}
+@media(max-width:380px){
+  .topbar{padding:0 10px;}
+  .app-title{font-size:0.85rem;}
+  .year-total-pill{padding:5px 10px;gap:6px;}
+  .year-total-pill span:first-child{font-size:0.5rem;letter-spacing:.3px;}
+  .year-total-pill span:last-child{font-size:0.85rem;}
+}
+/* Kalender: Spalten immer gleich breit, kein Überlauf */
+.days-grid{grid-template-columns:repeat(7,minmax(0,1fr));}
+.dc{min-width:0;}
+.dbtn{min-width:0;}
 </style>
 </head>
 <body>
 <div class="topbar">
-  <div>
+  <div class="tb-left">
     <div class="app-title">Dienst<em>Rechner</em> <span id="appYear">2026</span></div>
-    
-  </div>
-  <div style="display:flex;align-items:center;gap:10px;">
-    <div style="display:flex;background:rgba(255,255,255,0.12);border-radius:20px;padding:3px;gap:2px;">
-      <button id="ybtn2026" onclick="setYear(2026)" style="padding:4px 14px;border-radius:16px;border:none;font-size:0.78rem;font-weight:700;cursor:pointer;background:#fff;color:#0e1929;box-shadow:0 1px 4px rgba(0,0,0,0.2);">2026</button>
-      <button id="ybtn2027" onclick="setYear(2027)" style="padding:4px 14px;border-radius:16px;border:none;font-size:0.78rem;font-weight:700;cursor:pointer;background:transparent;color:rgba(255,255,255,0.55);">2027</button>
-    </div>
   </div>
   <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
     <div class="year-total-pill"><span>Jahres-BD</span><span id="yearTotal">0,00 €</span></div>
@@ -206,6 +219,12 @@ html{background:var(--n1);overscroll-behavior:none;}body::before{content:"";posi
         </select>
       </div>
 
+    </div>
+  </div>
+  <div class="year-seg">
+    <div class="year-seg-inner">
+      <button class="ybtn active" id="ybtn2026" onclick="setYear(2026)">2026</button>
+      <button class="ybtn" id="ybtn2027" onclick="setYear(2027)">2027</button>
     </div>
   </div>
   <div class="month-nav">
@@ -260,10 +279,8 @@ function _AY(){return window._ACTIVE_YEAR||2026;}const a0_0xf0bf68=a0_0x72e4;(fu
 })();
 
 function _yearBtnStyles(y){
-  const ON  = 'padding:4px 14px;border-radius:16px;border:none;font-size:0.78rem;font-weight:700;cursor:pointer;background:#fff;color:#0e1929;box-shadow:0 1px 4px rgba(0,0,0,0.2);';
-  const OFF = 'padding:4px 14px;border-radius:16px;border:none;font-size:0.78rem;font-weight:700;cursor:pointer;background:transparent;color:rgba(255,255,255,0.55);';
-  document.getElementById('ybtn2026').style.cssText = y === 2026 ? ON : OFF;
-  document.getElementById('ybtn2027').style.cssText = y === 2027 ? ON : OFF;
+  document.getElementById('ybtn2026').classList.toggle('active', y === 2026);
+  document.getElementById('ybtn2027').classList.toggle('active', y === 2027);
   document.getElementById('appYear').textContent = y;
   document.title = 'DienstRechner ' + y;
 }
